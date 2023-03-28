@@ -1,0 +1,54 @@
+/* =========
+  Rotating Announcement in Squarespace
+  This Code is Licensed by Will-Myers.com
+========== */
+
+
+.sqs-edit-mode-active [data-wm-plugin="rotating-announcement"] > *:first-child{
+  opacity: 1;
+  position: initial;
+}
+[data-wm-plugin="rotating-announcement"]:not(.loaded) > *:not(:first-child){
+  display:none;
+}
+[data-wm-plugin="rotating-announcement"]{
+  height: var(--calculated-height);
+  margin: 0.2rem 0;
+  --speed: 0.3s;
+  --z-offset: calc(var(--calculated-height) / 2);
+  display: grid;
+  place-items: center;
+}
+
+[data-wm-plugin="rotating-announcement"] > * {
+  opacity: 0;
+  position: absolute;
+  margin: 0 !important;
+  width: 100%;
+}
+[data-wm-plugin="rotating-announcement"] > *{
+  transform-origin: center center var(--z-offset);
+  transition: transform var(--speed) ease;
+}
+
+[data-wm-plugin="rotating-announcement"] > *.prev{
+  transform: rotateX(-90deg);
+  opacity:1;
+}
+
+[data-wm-plugin="rotating-announcement"] > *.active{
+  transform: rotateX(0deg);
+  transition: transform var(--speed) ease;
+  opacity:1;
+}
+
+[data-wm-plugin="rotating-announcement"] > *.next{
+  transform: rotateX(90deg);
+  opacity:1;
+  transition: transform var(--speed) ease,
+    opacity 0s ease var(--speed);
+}
+
+#announcement-bar-text-inner-id{
+  position:relative;
+}
