@@ -72,7 +72,7 @@
         container = instance.elements.container,
         length = instance.settings.length;
 
-      if(length <= 2){
+      if(length <= 3){
         let clonedNodes = Array.from(nodes).map(el => el.cloneNode(true));
         clonedNodes.forEach(clone => {
           container.insertAdjacentElement('beforeend', clone)
@@ -101,6 +101,9 @@
       let instance = this;
       instance.settings = {
         el: el,
+        get isAnnouncement() {
+          return !!this.el.closest('#header');
+        },
         get length() {
           return instance.elements.nodes.length;
         },
@@ -120,7 +123,6 @@
           for (let i = 0; i < nodeList.length; i++) {
             nodeList[i].style.height = 'auto'
             const height = parseInt(nodeList[i].offsetHeight);
-            console.log('auto')
             nodeList[i].style.auto = '';
             if (height > maxHeight) {
               tallestNode = nodeList[i];
@@ -131,7 +133,9 @@
         }
       };
 
-      if (instance.settings.length <=1) return;
+      if (instance.settings.length <= 1 ) {
+        return;
+      }
 
       setAnnouncementBarAttributes(instance);
       
