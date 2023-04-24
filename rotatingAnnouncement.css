@@ -4,14 +4,15 @@
 ========== */
 
 
-.sqs-edit-mode-active [data-wm-plugin="rotating-announcement"] > *:first-child{
-  opacity: 1;
-  position: initial;
+.sqs-edit-mode-active [data-wm-plugin="rotating-announcement"] > *:first-child,
+.sqs-edit-mode-active #header [data-wm-plugin="rotating-announcement"] > *:first-child{
+  opacity: 1 !important;
+  position: initial !important;
 }
 [data-wm-plugin="rotating-announcement"]:not(.loaded) > *:not(:first-child){
   display:none;
 }
-[data-wm-plugin="rotating-announcement"]{
+[data-wm-plugin="rotating-announcement"].loaded{
   height: var(--calculated-height);
   margin: 0.2rem 0;
   --speed: 0.3s;
@@ -20,35 +21,46 @@
   place-items: center;
 }
 
-[data-wm-plugin="rotating-announcement"] > * {
-  opacity: 0;
+[data-wm-plugin="rotating-announcement"].loaded > *,
+#header [data-wm-plugin="rotating-announcement"].loaded > *{
+  opacity: 0 !important;
   position: absolute;
   margin: 0 !important;
   width: 100%;
-}
-[data-wm-plugin="rotating-announcement"] > *{
-  transform-origin: center center var(--z-offset);
-  transition: transform var(--speed) ease;
-}
-
-[data-wm-plugin="rotating-announcement"] > *.prev{
-  transform: rotateX(-90deg);
-  opacity:1;
+  transform-origin: center center var(--z-offset) !important;
+  transition: transform var(--speed) ease !important;
+  z-index:0;
 }
 
-[data-wm-plugin="rotating-announcement"] > *.active{
-  transform: rotateX(0deg);
-  transition: transform var(--speed) ease;
-  opacity:1;
+[data-wm-plugin="rotating-announcement"].loaded > *.prev,
+#header [data-wm-plugin="rotating-announcement"].loaded > *.prev{
+  transform: rotateX(-90deg) !important;
+  opacity:1 !important;
+  z-index:1
 }
 
-[data-wm-plugin="rotating-announcement"] > *.next{
-  transform: rotateX(90deg);
-  opacity:1;
+[data-wm-plugin="rotating-announcement"].loaded > *.active,
+#header [data-wm-plugin="rotating-announcement"].loaded > *.active {
+  transform: rotateX(0deg) !important;
+  transition: transform var(--speed) ease !important;
+  opacity:1 !important;
+  z-index:2;
+}
+
+[data-wm-plugin="rotating-announcement"].loaded > *.next,
+#header [data-wm-plugin="rotating-announcement"] > *.next{
+  transform: rotateX(90deg) !important;
+  opacity:1 !important;
   transition: transform var(--speed) ease,
-    opacity 0s ease var(--speed);
+    opacity 0s ease var(--speed) !important;
+  z-index:1
 }
 
-#announcement-bar-text-inner-id{
+#announcement-bar-text-inner-id[data-wm-plugin="rotating-announcement"].loaded{
   position:relative;
+}
+
+/*Remove Underline Animation if There is one*/
+#announcement-bar-text-inner-id[data-wm-plugin="rotating-announcement"].loaded a:after{
+  content: unset !important;
 }
