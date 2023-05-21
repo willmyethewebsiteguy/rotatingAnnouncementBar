@@ -3,8 +3,6 @@
   This Code is Licensed by Will-Myers.com
 ========== */
 
-
-.sqs-edit-mode-active [data-wm-plugin="rotating-announcement"] > *:first-child,
 .sqs-edit-mode-active #header [data-wm-plugin="rotating-announcement"] > *:first-child{
   opacity: 1 !important;
   position: initial !important;
@@ -21,7 +19,6 @@
   place-items: center;
 }
 
-[data-wm-plugin="rotating-announcement"].loaded > *,
 #header [data-wm-plugin="rotating-announcement"].loaded > *{
   opacity: 0 !important;
   position: absolute;
@@ -32,14 +29,12 @@
   z-index:0;
 }
 
-[data-wm-plugin="rotating-announcement"].loaded > *.prev,
 #header [data-wm-plugin="rotating-announcement"].loaded > *.prev{
   transform: rotateX(-90deg) !important;
   opacity:1 !important;
   z-index:1
 }
 
-[data-wm-plugin="rotating-announcement"].loaded > *.active,
 #header [data-wm-plugin="rotating-announcement"].loaded > *.active {
   transform: rotateX(0deg) !important;
   transition: transform var(--speed) ease !important;
@@ -47,8 +42,7 @@
   z-index:2;
 }
 
-[data-wm-plugin="rotating-announcement"].loaded > *.next,
-#header [data-wm-plugin="rotating-announcement"] > *.next{
+#header [data-wm-plugin="rotating-announcement"].loaded > *.next{
   transform: rotateX(90deg) !important;
   opacity:1 !important;
   transition: transform var(--speed) ease,
