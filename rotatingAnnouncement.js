@@ -86,7 +86,6 @@
       if (!container.closest('#header')) return;
       let delay = utils.getPropertyValue(container, '--delay');
       container.dataset.delay = delay;
-      
     }
 
     function setTemplateSize(instance){
@@ -123,6 +122,7 @@
           for (let i = 0; i < nodeList.length; i++) {
             nodeList[i].style.height = 'auto'
             const height = parseInt(nodeList[i].offsetHeight);
+            console.log('auto')
             nodeList[i].style.auto = '';
             if (height > maxHeight) {
               tallestNode = nodeList[i];
@@ -151,15 +151,6 @@
     return Constructor;
   }());
 
-
-  
-  let initRotatingAnnouncement = () => {
-    let els = document.querySelectorAll('[data-wm-plugin="rotating-announcement"]:not(.loaded)');
-    for (let el of els){
-      new RotatingAnnouncement(el);
-    }
-  }
-
   let abDropzone = document.querySelector('.sqs-announcement-bar-dropzone');
   let observer = new MutationObserver(function(mutations_list) {
     mutations_list.forEach(function(mutation) {
@@ -173,11 +164,10 @@
       }
     });
   });
-  observer.observe(abDropzone, { subtree: false, childList: true, attributes: false});
-  
-  
-  initRotatingAnnouncement();
-  window.addEventListener('load', initRotatingAnnouncement);
-  window.addEventListener('mercury:load', initRotatingAnnouncement)
-  window.wmInitRotatingAnnouncement = initRotatingAnnouncement;
+  observer.observe(abDropzone, { 
+    subtree: false, 
+    childList: true, 
+    attributes: false
+  });
+
 }());
