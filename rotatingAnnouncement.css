@@ -23,7 +23,8 @@
   opacity: 0 !important;
   position: absolute;
   margin: 0 !important;
-  width: 100%;
+  display: inline;
+  place-self: center;
   transform-origin: center center var(--z-offset) !important;
   transition: transform var(--speed) ease !important;
   z-index:0;
@@ -48,10 +49,6 @@
   transition: transform var(--speed) ease,
     opacity 0s ease var(--speed) !important;
   z-index:1
-}
-
-#announcement-bar-text-inner-id[data-wm-plugin="rotating-announcement"].loaded{
-  position:relative;
 }
 
 /*Remove Underline Animation if There is one*/
