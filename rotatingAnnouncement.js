@@ -2,7 +2,6 @@
   Rotating Announcement Squarespace
   This Code is Licensed by Will-Myers.com
 ========== */
-
 (function () {
   const utils = {
     emitEvent: function (type, detail = {}, elem = document) {
@@ -41,7 +40,8 @@
         prev = els[prevIndex],
         active = els[activeIndex],
         next = els[nextIndex],
-        delay = instance.settings.delay;
+        delay = instance.settings.delay,
+        linkWrapper = instance.elements.linkWrapper;
   
       function showCurrent(){
         if (window.pauseAnnouncementRotate) return;
@@ -60,6 +60,11 @@
         prev.classList.add('prev');
         active.classList.add('active');
         next.classList.add('next');
+
+        if (active.querySelector('a')) {
+          let href = active.querySelector('a').getAttribute('href');
+          linkWrapper.setAttribute('href', href);
+        }
       }
 
       active.classList.add('active');
@@ -96,6 +101,12 @@
       container.style.setProperty('--calculated-height', height);
     }
 
+    function buildLinkWrapper(instance){
+      let content = document.querySelector('.sqs-announcement-bar-content');
+      let html = `<a class="sqs-announcement-bar-url" href="#" aria-labelledby="announcement-bar-text-inner-id"></a>`;
+      content.insertAdjacentHTML('afterbegin', html);
+    }
+
     function Constructor(el) {
       let instance = this;
       instance.settings = {
@@ -108,12 +119,17 @@
         },
         get delay() {
           return this.el.dataset.delay || 2000;
-        }
+        },
+        hasLinks: el.querySelector('a')
       };
       instance.elements = {
         container: el,
         get nodes() {
-          return this.container.querySelectorAll(':scope > *');
+          let nodes = this.container.querySelectorAll(':scope > *');
+          for (let node of nodes) {
+            if (node.innerText == '') node.remove()
+          }
+          return nodes
         },
         get tallestNode(){
           let tallestNode = null;
@@ -122,7 +138,6 @@
           for (let i = 0; i < nodeList.length; i++) {
             nodeList[i].style.height = 'auto'
             const height = parseInt(nodeList[i].offsetHeight);
-            console.log('auto')
             nodeList[i].style.auto = '';
             if (height > maxHeight) {
               tallestNode = nodeList[i];
@@ -130,14 +145,20 @@
             }
           }
           return tallestNode;
+        },
+        get linkWrapper() {
+          return document.querySelector('.sqs-announcement-bar-url')
         }
       };
 
       if (instance.settings.length <= 1 ) {
         return;
       }
-
+      
       setAnnouncementBarAttributes(instance);
+      if (!instance.elements.linkWrapper && instance.settings.hasLinks) {
+        buildLinkWrapper();
+      }
       
       duplicateIfNeeded(instance);
       setTemplateSize(instance);
