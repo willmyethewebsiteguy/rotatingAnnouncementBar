@@ -17,13 +17,16 @@
   --z-offset: calc(var(--calculated-height) / 2);
   display: grid;
   place-items: center;
+  position:relative;
 }
 
 #header [data-wm-plugin="rotating-announcement"].loaded > *{
   opacity: 0 !important;
   position: absolute;
   margin: 0 !important;
-  display: inline;
+  text-align: var(--text-align, center);
+  display: block;
+  width:100%;
   place-self: center;
   transform-origin: center center var(--z-offset) !important;
   transition: transform var(--speed) ease !important;
