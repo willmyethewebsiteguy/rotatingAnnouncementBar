@@ -2,6 +2,7 @@
   Rotating Announcement Squarespace
   This Code is Licensed by Will-Myers.com
 ========== */
+
 (function () {
   const utils = {
     emitEvent: function (type, detail = {}, elem = document) {
@@ -125,11 +126,11 @@
       instance.elements = {
         container: el,
         get nodes() {
-          let nodes = this.container.querySelectorAll(':scope > *');
-          for (let node of nodes) {
-            if (node.innerText == '') node.remove()
-          }
-          return nodes
+          let nodes = Array.from(this.container.querySelectorAll(':scope > *'));
+          nodes.forEach(node => {
+            if (node.textContent.trim() === '') {  node.remove();  }
+          });
+          return nodes.filter(node => node.parentNode === this.container);
         },
         get tallestNode(){
           let tallestNode = null;
@@ -150,11 +151,11 @@
           return document.querySelector('.sqs-announcement-bar-url')
         }
       };
-
+      
       if (instance.settings.length <= 1 ) {
         return;
       }
-      
+
       setAnnouncementBarAttributes(instance);
       if (!instance.elements.linkWrapper && instance.settings.hasLinks) {
         buildLinkWrapper();
