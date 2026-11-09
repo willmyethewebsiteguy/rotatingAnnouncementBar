@@ -173,23 +173,32 @@
     return Constructor;
   }());
 
-  let abDropzone = document.querySelector('.sqs-announcement-bar-dropzone');
-  let observer = new MutationObserver(function(mutations_list) {
-    mutations_list.forEach(function(mutation) {
-      if (mutation.addedNodes.length !== 0){
-        let announcementBar = document.querySelector('#announcement-bar-text-inner-id:not(.loaded)'),
+  function initAnnouncementBar() {
+    let announcementBar = document.querySelector('#announcement-bar-text-inner-id:not(.loaded)'),
       abRotate = announcementBar ? utils.getPropertyValue(announcementBar, '--rotating-announcement') : null;
-        if (abRotate){
-          announcementBar.setAttribute('data-wm-plugin', 'rotating-announcement');
-          new RotatingAnnouncement(announcementBar);
-        }
-      }
+    if (abRotate){
+      announcementBar.setAttribute('data-wm-plugin', 'rotating-announcement');
+      new RotatingAnnouncement(announcementBar);
+    }
+  }
+
+  /* Squarespace now server-renders the announcement bar, so it may
+     already be in the page before this script runs. */
+  initAnnouncementBar();
+
+  /* Older rendering adds the bar into the dropzone after load. */
+  let abDropzone = document.querySelector('.sqs-announcement-bar-dropzone');
+  if (abDropzone) {
+    let observer = new MutationObserver(function(mutations_list) {
+      mutations_list.forEach(function(mutation) {
+        if (mutation.addedNodes.length !== 0) initAnnouncementBar();
+      });
     });
-  });
-  observer.observe(abDropzone, { 
-    subtree: false, 
-    childList: true, 
-    attributes: false
-  });
+    observer.observe(abDropzone, {
+      subtree: false,
+      childList: true,
+      attributes: false
+    });
+  }
 
 }());
